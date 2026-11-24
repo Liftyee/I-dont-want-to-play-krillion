@@ -12,7 +12,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from datetime import date, datetime
 
-from flask import Flask, make_response, render_template
+from flask import Flask, make_response, render_template, send_from_directory
 
 
 API = "https://krillion.io/api/"
@@ -134,6 +134,11 @@ def cached_daily(path=None, loader=None, clock=None):
         connection.close()
 
 
+@app.get("/favicon.png")
+def favicon():
+    return send_from_directory(Path(app.root_path) / "public", "favicon.png")
+
+
 @app.get("/")
 def index():
     try:
@@ -149,7 +154,7 @@ def index():
         response.headers["Retry-After"] = str(RETRY_SECONDS)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "no-referrer"
-    response.headers["Content-Security-Policy"] = "default-src 'none'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+    response.headers["Content-Security-Policy"] = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
     return response
 
 
