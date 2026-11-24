@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>I don't want to play Krillion</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { color-scheme: dark; background: #111; color: #e5e5e5; }
+    * { box-sizing: border-box; }
+    body {
+      max-width: 88ch;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 1.5rem;
+      font-family: ui-monospace, "Cascadia Code", "DejaVu Sans Mono", "Liberation Mono", monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+    h1 { font-size: 1rem; font-weight: 700; margin: 0; }
+    header { padding-bottom: 1.25rem; border-bottom: 1px solid #777; }
+    ol { list-style: none; padding: 0; margin: 0; }
+    li { display: grid; grid-template-columns: 3ch minmax(0, 1fr); column-gap: 1.5ch; padding: 1.5rem 0; }
+    li + li { border-top: 1px solid #363636; }
+    .number { color: #aaa; font-variant-numeric: tabular-nums; }
+    h2 { font-size: 1rem; font-weight: 400; margin: 0 0 .75rem; color: #bdbdbd; }
+    .answer { font-weight: 700; margin: 0; color: #fff; }
+    .explanation { margin: .25rem 0 0; color: #bdbdbd; }
+    .answer + .explanation + .answer { margin-top: 1rem; }
+    footer { border-top: 1px solid #777; padding-top: 1.25rem; color: #aaa; }
+    footer p { margin: 0; }
+    .unavailable { margin: 2rem 0; }
+    @media (max-width: 40rem) {
+      body { padding: 1.5rem 1rem; }
+      li { column-gap: 1ch; }
+    }
+    @media print {
+      :root { color-scheme: light; background: #fff; }
+      body { max-width: none; padding: 0; }
+      h1, h2, .number, .answer, .explanation, footer { color: #000; }
+      li { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header><h1>I don't want to play Krillion</h1></header>
+  <main>
+    {% if unavailable %}
+    <p class="unavailable" role="alert">Today's answers are unavailable. Please try again in a minute.</p>
+    {% else %}
+    <ol>
+      {% for question in questions %}
+      <li>
+        <span class="number" aria-hidden="true">{{ '%02d' | format(question.number) }}</span>
+        <div>
+          <h2>{{ question.prompt }}</h2>
+          {% for item in question.answers %}
+          <p class="answer">{{ item.answer }}</p>
+          <p class="explanation">{{ item.explanation }}</p>
+          {% else %}
+          <p class="answer">No Krillion answer published.</p>
+          {% endfor %}
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+  </main>
+  <footer><p>If you use this to cheat, you should find something better to do with your life</p></footer>
+</body>
+</html>
